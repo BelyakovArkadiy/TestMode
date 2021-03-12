@@ -5,8 +5,10 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import java.io.File;
+import static com.codeborne.selenide.Selenide.open;
+
 
 import static io.restassured.RestAssured.given;
 
@@ -21,15 +23,20 @@ public class TestModeTest {
 
     @BeforeAll
     static void setUpAll() {
-        // сам запрос
-        given() // "дано"
-                .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new RegistrationDto("vasya", "password", "active")) // передаём в теле объект, который будет преобразован в JSON
-                .when() // "когда"
-                .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
-                .then() // "тогда ожидаем"
-                .statusCode(200); // код 200 OK
+
+            open("http://localhost:9999");
+        }
+        @Test
+        void shouldTestAllFields () {
+            // сам запрос
+            given() // "дано"
+                    .spec(requestSpec) // указываем, какую спецификацию используем
+                    .body(new RegistrationDto("vasya", "password", "active")) // передаём в теле объект, который будет преобразован в JSON
+                    .when() // "когда"
+                    .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
+                    .then() // "тогда ожидаем"
+                    .statusCode(200); // код 200 OK
+        }
+
     }
 
-
-}

@@ -1,9 +1,17 @@
 package ru.netology.test;
 
-import java.io.File;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class RegistrationDto extends File {
-    public RegistrationDto(String vasya, String password, String active) {
-        super();
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
+
+
+public class RegistrationDto {
+    public RegistrationDto(String user, String password, String status) {
+        return ;
     }
 }
