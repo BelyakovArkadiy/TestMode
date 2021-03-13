@@ -15,23 +15,44 @@ import java.util.Random;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationDto {
-
-
     Faker faker = new Faker(new Locale("en"));
 
+    public static String[] userGenerate(Faker faker) {
+        String  login = faker.name().firstName();
+        String password = faker.internet().password();
+        String userStatus = RegistrationDto.getStatus();
+        String[] user = {login, password, userStatus};
+        return user;
+    }
 
+    public static String validLogin(String[] user){
+        String validUser = user[0];
+        return validUser;
 
-    public static String newLogin(Faker faker) {
+    }
+    public static String validPassword(String[] user){
+            String validPassword = user[1];
+            return validPassword;
+        }
+    public static String validStatus(String[] user){
+        String validStatus = user[2];
+        return validStatus;
+    }
+
+    /*public static String newLogin(Faker faker) {
         return faker.name().firstName();
     }
-    public static String newPassword(Faker faker){
+*/
+    /*public static String newPassword(Faker faker) {
         return faker.internet().password();
-    }
-    public static String getStatus(){
-        String[] status = {"active","blocked"};
+    }*/
+
+    public static String getStatus() {
+        String[] status = {"active", "blocked"};
         int currentStatus = new Random().nextInt(status.length);
         return status[currentStatus];
     }
+
 
 }
 

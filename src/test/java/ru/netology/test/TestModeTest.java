@@ -19,8 +19,11 @@ import static com.codeborne.selenide.Condition.visible;
 
 
 public class TestModeTest {
-    RegistrationDto user = new RegistrationDto();
     Faker faker = new Faker(Locale.ENGLISH);
+    static RegistrationDto user = new RegistrationDto();
+
+
+
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
@@ -31,22 +34,26 @@ public class TestModeTest {
 
     @BeforeAll
     static void setUpAll() {
+        Faker faker = new Faker(Locale.ENGLISH);
+        RegistrationDto user = new RegistrationDto();
+        String[] validUser = user.userGenerate(faker);
         RestAssured.given()
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new RegistrationDto()) // передаём в теле объект, который будет преобразован в JSON
+                .body(validUser) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
-                .statusCode(200); // код 200 OK
+                .statusCode(500); // код 200 OK
     }
 
     @Test
     void shouldValidUser() {
         open("http://localhost:9999");
-        $("[type='text']").setValue(user.newLogin(faker));
-        $("[type='password']").setValue(user.newPassword(faker));
+
+        $("[type='text']").setValue(user.validLogin(user.userGenerate(faker)));
+        $("[type='password']").setValue(user.validPassword(user.userGenerate(faker)));
         $(".button__text").click();
-        $(withText("Личный кабинет")).shouldBe(visible, Duration.ofSeconds(15));
+        $(withText("Ошибка")).shouldBe(visible, Duration.ofSeconds(15));
 
 
     }
