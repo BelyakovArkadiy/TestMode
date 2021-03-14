@@ -32,7 +32,7 @@ public class TestModeTest{
         RegistrationDto.setActiveUser();
         $("[data-test-id=login] [class = input__control]").setValue(user.getLogin());
         $("[data-test-id=password] [class = input__control]").setValue(user.getPassword());
-        $(".button__text").click();
+        $(byText("Продолжить")).click();
         $(withText("Личный кабинет")).shouldBe(visible, Duration.ofSeconds(15));
     }
 
