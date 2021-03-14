@@ -2,59 +2,75 @@ package ru.netology.test;
 
 
 import com.github.javafaker.Faker;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 
 import java.util.Locale;
-import java.util.Random;
 
-@Data
-@Value
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegistrationDto {
-    Faker faker = new Faker(new Locale("en"));
 
-    public static String[] userGenerate(Faker faker) {
-        String  login = faker.name().firstName();
+class RegistrationDto {
+
+    public static RequestSpecification requestSpecification = new RequestSpecBuilder()
+            .setBaseUri("http://localhost")
+            .setPort(9999)
+            .setAccept(ContentType.JSON)
+            .setContentType(ContentType.JSON)
+            .log(LogDetail.ALL)
+            .build();
+
+    public static void postUser(User registration) {
+        RestAssured.given()
+                .spec(requestSpecification)
+                .body(registration)
+                .when()
+                .post("/api/system/users")
+                .then()
+                .statusCode(200);
+    }
+
+
+    public static User setActiveUser() {
+        String login = "Artur Platonov";
+        String password = "Password123";
+        String status = "active";
+        User registration = new User(login, password, status);
+        postUser(registration);
+        return registration;
+    }
+
+    public static User setBlockedUser() {
+        String login = "Artur Platonov";
+        String password = "Password123";
+        String status = "blocked";
+        User registration = new User(login, password, status);
+        postUser(registration);
+        return registration;
+    }
+
+    public static User setIncorrectPassword() {
+        Faker faker = new Faker(new Locale("eng"));
+        String login = "Artur Platonov";
         String password = faker.internet().password();
-        String userStatus = RegistrationDto.getStatus();
-        String[] user = {login, password, userStatus};
-        return user;
+        String status = "active";
+        User registration = new User (login, password, status);
+        postUser(registration);
+        return registration;
     }
 
-    public static String validLogin(String[] user){
-        String validUser = user[0];
-        return validUser;
-
+    public static User setIncorrectLogin() {
+        Faker faker = new Faker(new Locale("eng"));
+        String login = faker.name().fullName();
+        String password = "Password123";
+        String status = "active";
+        User registration = new User(login, password, status);
+        postUser(registration);
+        return registration;
     }
-    public static String validPassword(String[] user){
-            String validPassword = user[1];
-            return validPassword;
-        }
-    public static String validStatus(String[] user){
-        String validStatus = user[2];
-        return validStatus;
-    }
-
-    /*public static String newLogin(Faker faker) {
-        return faker.name().firstName();
-    }
-*/
-    /*public static String newPassword(Faker faker) {
-        return faker.internet().password();
-    }*/
-
-    public static String getStatus() {
-        String[] status = {"active", "blocked"};
-        int currentStatus = new Random().nextInt(status.length);
-        return status[currentStatus];
-    }
-
-
 }
+
 
 
 
