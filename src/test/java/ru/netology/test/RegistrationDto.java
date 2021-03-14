@@ -21,14 +21,14 @@ class RegistrationDto {
             .log(LogDetail.ALL)
             .build();
 
-    public static void postUser(User registration,int statusCode) {
+    public static void postUser(User registration) {
         RestAssured.given()
                 .spec(requestSpecification)
                 .body(registration)
                 .when()
                 .post("/api/system/users")
                 .then()
-                .statusCode(statusCode);
+                .statusCode(200);
     }
 
 
@@ -37,8 +37,7 @@ class RegistrationDto {
         String password = "Password123";
         String status = "active";
         User registration = new User(login, password, status);
-        int statusCode = 200;
-        postUser(registration, statusCode);
+        postUser(registration);
         return registration;
     }
 
@@ -47,8 +46,7 @@ class RegistrationDto {
         String password = "Password123";
         String status = "blocked";
         User registration = new User(login, password, status);
-        int statusCode = 404;
-        postUser(registration, statusCode);
+        postUser(registration);
         return registration;
     }
 
@@ -58,8 +56,7 @@ class RegistrationDto {
         String password = faker.internet().password();
         String status = "active";
         User registration = new User (login, password, status);
-        int statusCode = 404;
-        postUser(registration, statusCode);
+        postUser(registration);
         return registration;
     }
 
@@ -69,8 +66,7 @@ class RegistrationDto {
         String password = "Password123";
         String status = "active";
         User registration = new User(login, password, status);
-        int statusCode = 404;
-        postUser(registration, statusCode);
+        postUser(registration);
         return registration;
     }
 }
