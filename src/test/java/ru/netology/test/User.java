@@ -1,12 +1,18 @@
 package ru.netology.test;
+
+import com.github.javafaker.Faker;
 import lombok.Data;
 
-@Data
+
+
+
 public class User  {
 
-    private String login = "Artur Platonov";
-    private String password = "Password123";
+
+    private String login;
+    private String password;
     private String status;
+
 
 
     public User() {
@@ -21,12 +27,26 @@ public class User  {
 
 
     public String getLogin() {
+
         return login;
     }
 
     public String getPassword() {
+
         return password;
     }
 
+    public void setLogin(String password) {
+
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
 

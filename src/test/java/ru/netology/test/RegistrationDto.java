@@ -13,6 +13,7 @@ import java.util.Locale;
 
 class RegistrationDto {
 
+
     public static RequestSpecification requestSpecification = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
@@ -33,8 +34,9 @@ class RegistrationDto {
 
 
     public static User setActiveUser() {
-        String login = "Artur Platonov";
-        String password = "Password123";
+        Faker faker = new Faker(new Locale("eng"));
+        String login = faker.name().fullName();
+        String password = faker.internet().password();
         String status = "active";
         User registration = new User(login, password, status);
         postUser(registration);
@@ -55,7 +57,7 @@ class RegistrationDto {
         String login = "Artur Platonov";
         String password = faker.internet().password();
         String status = "active";
-        User registration = new User (login, password, status);
+        User registration = new User(login, password, status);
         postUser(registration);
         return registration;
     }
@@ -69,8 +71,10 @@ class RegistrationDto {
         postUser(registration);
         return registration;
     }
-}
 
+
+
+}
 
 
 
